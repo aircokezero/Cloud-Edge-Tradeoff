@@ -83,8 +83,7 @@ This dataset represents industrial sensor and edge-processing conditions. It con
 | `Edge_Efficiency_Score` | float | Overall edge processing efficiency score ranging from 0–100 |
 
 ### Edge Efficiency Score
-
-`Edge_Efficiency_Score` combines network latency, edge processing time, vibration, temperature, and predicted failure risk.
+Edge_Efficiency_Score combines network latency, edge processing time, vibration, temperature, and predicted failure risk.
 Higher scores indicate conditions that are more favorable for processing workloads at the edge.
 ---
 
