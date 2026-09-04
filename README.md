@@ -1,119 +1,51 @@
 ## Dataset Setup
-
 This project uses [DVC](https://dvc.org/) with DagsHub Storage for dataset versioning.
 
 ### 1. Clone the repository
-
-```bash
+```
 git clone https://github.com/aircokezero/Cloud-Edge-Tradeoff.git
 cd Cloud-Edge-Tradeoff
 ```
 
 ### 2. Create and activate a virtual environment
-
-```bash
+```
 python -m venv .venv
 ```
 
 Windows (Git CMD):
-
 ```bash
 call .venv\Scripts\activate.bat
 ```
 
 ### 3. Install DVC with S3 support
-
-```bash
+```
 python -m pip install --upgrade pip
 pip install "dvc[s3]" dagshub
 ```
 
 ### 4. Configure the DagsHub DVC remote
-
-```bash
+```
 dvc remote add -d storage s3://dvc
 dvc remote modify storage endpointurl https://dagshub.com/aircokezero/Cloud-Edge-Tradeoff.s3
 ```
 
 ### 5. Configure DagsHub authentication
-
 Generate a DagsHub access token and use it for both credentials:
-
-```bash
+```
 dvc remote modify --local storage access_key_id YOUR_DAGSHUB_TOKEN
 dvc remote modify --local storage secret_access_key YOUR_DAGSHUB_TOKEN
 ```
 
 ### 6. Download the datasets
-
-```bash
+```
 dvc pull
 ```
 
 The datasets will be restored to the `data/` directory.
-
 > **Note:** Never commit your DagsHub access token. The `--local` flag stores the credentials locally in `.dvc/config.local`.
 
 ## Updating Datasets
 
-After modifying or adding files inside `data/`:
-
-```bash
-dvc add data
-git add data.dvc
-git commit -m "Update datasets"
-dvc push
-git push origin main
-git push dagshub main
-```Dataset Setup
-
-This project uses [DVC](https://dvc.org/) with DagsHub Storage for dataset versioning.
-
-1. Clone the repository
-```
-git clone https://github.com/aircokezero/Cloud-Edge-Tradeoff.git
-cd Cloud-Edge-Tradeoff
-```
-
-2. Create and activate a virtual environment
-```
-python -m venv .venv
-```
-
-Windows (Git CMD):
-```
-call .venv\Scripts\activate.bat
-```
-
-3. Install DVC with S3 support
-```
-python -m pip install --upgrade pip
-pip install "dvc[s3]" dagshub
-```
-
-4. Configure the DagsHub DVC remote
-```
-dvc remote add -d storage s3://dvc
-dvc remote modify storage endpointurl https://dagshub.com/aircokezero/Cloud-Edge-Tradeoff.s3
-```
-
-5. Configure DagsHub authentication
-
-Generate a DagsHub access token and use it for both credentials:
-```
-dvc remote modify --local storage access_key_id YOUR_DAGSHUB_TOKEN
-dvc remote modify --local storage secret_access_key YOUR_DAGSHUB_TOKEN
-```
-
-6. Download the datasets
-```
-dvc pull
-```
-
-The datasets will be restored to the `data/` directory.
-> **Note:** Never commit your DagsHub access token. The `--local` flag stores the credentials locally in `.dvc/config.local`.
-
-Updating Datasets
 After modifying or adding files inside `data/`:
 ```
 dvc add data
@@ -125,19 +57,13 @@ git push dagshub main
 ```
 
 # Dataset Schemas
-
 The project uses two final processed datasets representing the Edge/IIoT environment and the Cloud/Infrastructure environment. Both datasets include engineered efficiency features that are later used by the adaptive workload placement component.
-
 ---
-
 ## 1. IIoT / Edge Dataset
-
 **File:** `iiot_with_efficiency.csv`
-
 This dataset represents industrial sensor and edge-processing conditions. It contains sensor measurements, network characteristics, predictive maintenance information, and an engineered edge efficiency score.
 
 ### Schema
-
 | Column | Type | Description |
 |---|---|---|
 | `Timestamp` | datetime | Date and time of the sensor observation |
@@ -157,23 +83,16 @@ This dataset represents industrial sensor and edge-processing conditions. It con
 | `Edge_Efficiency_Score` | float | Overall edge processing efficiency score ranging from 0–100 |
 
 ### Edge Efficiency Score
-
 `Edge_Efficiency_Score` combines network latency, edge processing time, vibration, temperature, and predicted failure risk.
-
 Higher scores indicate conditions that are more favorable for processing workloads at the edge.
-
 ---
 
 ## 2. Cloud / Infrastructure Telemetry Dataset
-
 **File:** `telemetry_merged_with_efficiency.csv`
-
 This dataset combines node-level and pod-level telemetry from the cloud/edge infrastructure under both pod-on and pod-off scenarios.
-
 The original telemetry datasets have different schemas. Therefore, the merged dataset preserves columns from both node and pod telemetry. Fields that do not apply to a particular telemetry type are left empty (`NaN`).
 
 ### Schema
-
 | Column | Type | Description |
 |---|---|---|
 | `Scenario` | categorical | Identifies the telemetry scenario, e.g. `Node_Pods_On`, `Node_Pods_Off`, `Pod_Pods_On`, or `Pod_Pods_Off` |
@@ -192,9 +111,7 @@ The original telemetry datasets have different schemas. Therefore, the merged da
 | `Infrastructure_Efficiency_Score` | float | Overall infrastructure efficiency score ranging from 0–100 |
 
 ### Telemetry Sources
-
 The merged dataset consists of four source datasets:
-
 | Source Dataset | Telemetry Type | Pod Status |
 |---|---|---|
 | `node_telemetry_pods_on.csv` | Node | Pods On |
@@ -203,13 +120,10 @@ The merged dataset consists of four source datasets:
 | `pod_telemetry_pods_off.csv` | Pod | Pods Off |
 
 ### Infrastructure Efficiency Score
-
 The `Infrastructure_Efficiency_Score` is calculated according to the telemetry type.
 
 #### Node Telemetry
-
 The node score considers:
-
 - CPU utilization
 - Memory utilization
 - Filesystem utilization
@@ -218,9 +132,7 @@ The node score considers:
 - Network transmit throughput
 
 #### Pod Telemetry
-
 The pod score considers:
-
 - CPU utilization
 - Memory consumption
 - Energy consumption
