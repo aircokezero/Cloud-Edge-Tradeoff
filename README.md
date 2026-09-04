@@ -45,7 +45,6 @@ The datasets will be restored to the `data/` directory.
 > **Note:** Never commit your DagsHub access token. The `--local` flag stores the credentials locally in `.dvc/config.local`.
 
 ## Updating Datasets
-
 After modifying or adding files inside `data/`:
 ```
 dvc add data
@@ -58,6 +57,7 @@ git push dagshub main
 
 # Dataset Schemas
 The project uses two final processed datasets representing the Edge/IIoT environment and the Cloud/Infrastructure environment. Both datasets include engineered efficiency features that are later used by the adaptive workload placement component.
+
 ---
 ## 1. IIoT / Edge Dataset
 **File:** `iiot_with_efficiency.csv`
@@ -85,6 +85,7 @@ This dataset represents industrial sensor and edge-processing conditions. It con
 ### Edge Efficiency Score
 Edge_Efficiency_Score combines network latency, edge processing time, vibration, temperature, and predicted failure risk.
 Higher scores indicate conditions that are more favorable for processing workloads at the edge.
+
 ---
 
 ## 2. Cloud / Infrastructure Telemetry Dataset
