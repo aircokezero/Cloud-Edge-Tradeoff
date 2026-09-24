@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## Dataset Setup
 This project uses [DVC](https://dvc.org/) with DagsHub Storage for dataset versioning.
 
@@ -251,4 +250,3 @@ Redirect `test_api.py`'s output to a file:
 ```bash
 python test_api.py > test_evidence.txt
 ```
->>>>>>> fbc3afc (test)
