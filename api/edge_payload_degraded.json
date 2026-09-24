@@ -1,0 +1,10 @@
+{
+  "Temperature": 95.0,
+  "Pressure": 130.0,
+  "Vibration": 9.8,
+  "Network_Latency": 80.0,
+  "Edge_Processing_Time": 40.0,
+  "Fuzzy_PID_Output": 0.15,
+  "Maintenance_Status": "Failure",
+  "Predicted_Failure": 1
+}

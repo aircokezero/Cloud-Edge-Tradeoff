@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.git
+.gitignore
+.venv/
+*.ipynb
+data/
+mlruns/
+README.md
+payloads/

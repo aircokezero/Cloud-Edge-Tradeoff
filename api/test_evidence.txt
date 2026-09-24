@@ -1,0 +1,55 @@
+
+--- GET /health ---
+Status code: 200
+Response body: {
+  "status": "ok",
+  "edge_model_loaded": true,
+  "infra_model_loaded": true
+}
+
+--- POST /predict/edge (valid) ---
+Status code: 200
+Response body: {
+  "track": "edge",
+  "predicted_score": 72.35466560065768
+}
+
+--- POST /predict/edge (degraded conditions) ---
+Status code: 200
+Response body: {
+  "track": "edge",
+  "predicted_score": 19.207051638039687
+}
+
+--- POST /predict/infra (Node telemetry) ---
+Status code: 200
+Response body: {
+  "track": "infra",
+  "predicted_score": 8.704391449389904
+}
+
+--- POST /predict/infra (Pod telemetry) ---
+Status code: 200
+Response body: {
+  "track": "infra",
+  "predicted_score": 20.957243887222685
+}
+
+--- POST /predict/edge (invalid Maintenance_Status -> expect 422) ---
+Status code: 422
+Response body: {
+  "detail": [
+    {
+      "type": "literal_error",
+      "loc": [
+        "body",
+        "Maintenance_Status"
+      ],
+      "msg": "Input should be 'Normal', 'Warning' or 'Failure'",
+      "input": "NotARealStatus",
+      "ctx": {
+        "expected": "'Normal', 'Warning' or 'Failure'"
+      }
+    }
+  ]
+}

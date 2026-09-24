@@ -1,0 +1,12 @@
+{
+  "CPU (%)": 30.0,
+  "Energy (watts)": 55.0,
+  "MEM (%)": 0.0,
+  "fs (%)": 0.0,
+  "rx (B/sec)": 0.0,
+  "tx (B/sec)": 0.0,
+  "MEM (B)": 52428800,
+  "Telemetry_Type": "Pod",
+  "Pod_Status": "Pods On",
+  "Scenario": "Pod_Pods_On"
+}
