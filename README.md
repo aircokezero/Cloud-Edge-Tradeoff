@@ -1,3 +1,31 @@
+# Cloud-Edge Tradeoff: Adaptive Workload Placement
+
+An end-to-end ADS project deciding whether a workload should run at the
+**edge** (IIoT sensor conditions) or in the **cloud** (infrastructure
+telemetry), by predicting an efficiency score for each side and routing
+accordingly — with full experiment tracking, explainability, a fairness
+audit, a CI/CD pipeline, and a live dashboard.
+
+**Live links**
+- Dashboard: `[fill in your Streamlit Community Cloud URL]`
+- GitHub repo: `https://github.com/aircokezero/Cloud-Edge-Tradeoff`
+- DagsHub (data/DVC): `https://dagshub.com/aircokezero/Cloud-Edge-Tradeoff`
+
+## Running things locally
+
+Each subfolder has its own README with exact commands (all written for
+Windows/Git CMD, matching this project's development environment):
+- `api\README.md` — run the FastAPI service locally or via Docker
+- `dashboard\README.md` — run the Streamlit dashboard locally, and how to
+  deploy it to Streamlit Community Cloud
+
+## Responsible AI
+
+See `Responsible_AI.md` for the full report — data governance, the
+Experiment 5 fairness audit findings, explainability tooling, documented
+model limitations, and the drift-monitoring approach built into the
+Experiment 8 dashboard.
+
 ## Dataset Setup
 This project uses [DVC](https://dvc.org/) with DagsHub Storage for dataset versioning.
 

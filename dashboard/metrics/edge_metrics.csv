@@ -1,0 +1,5 @@
+Model,RMSE,MAE,R2
+RandomForest,3.348159,2.663833,0.951207
+RandomForest_tuned,3.333323,2.655291,0.951639
+GradientBoosting,1.936125,1.490790,0.983684
+GradientBoosting_tuned,1.275486,1.030800,0.992919
