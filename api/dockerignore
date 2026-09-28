@@ -8,3 +8,9 @@ data/
 mlruns/
 README.md
 payloads/
+tests/
+conftest.py
+requirements-dev.txt
+ruff.toml
+.pytest_cache/
+

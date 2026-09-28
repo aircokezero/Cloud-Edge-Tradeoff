@@ -1,0 +1,6 @@
+line-length = 120
+exclude = [".venv", "models", "__pycache__", "payloads"]
+
+[lint]
+select = ["E", "F", "W"]
+ignore = ["E501"]
