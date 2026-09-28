@@ -33,6 +33,51 @@ TRACKS = {
         "metrics_path": METRICS_DIR / "edge_metrics.csv",
         "reference_path": SAMPLE_DIR / "iiot_reference_sample.csv",
         "target": "Edge_Efficiency_Score",
+        "input_insight": (
+            "The edge model uses machine and network conditions to estimate the efficiency score. "
+            "In the current model, `Network_Latency` and `Edge_Processing_Time` have the strongest "
+            "influence: higher values generally lower the prediction. Higher `Vibration` and "
+            "`Temperature`, and `Predicted_Failure` = 1, also tend to lower it. `Pressure`, "
+            "`Fuzzy_PID_Output`, and `Maintenance_Status` have comparatively little influence "
+            "in the current model. These are learned associations, not causal guarantees."
+        ),
+        # Static insight written from the current model's SHAP summary plot.
+        # Re-check and update this text if the model is retrained.
+        "shap_insight": (
+            "**Key insights — Edge efficiency model**\n\n"
+            "- **Latency and processing time drive the score.** `Edge_Processing_Time` and "
+            "`Network_Latency` have by far the widest spread (roughly \u221219 to +15 points). "
+            "Low values raise predicted efficiency; high values lower it the most.\n"
+            "- **Machine condition is the second tier.** Higher `Vibration` and `Temperature` "
+            "pull the score down (up to about \u22127 and \u22125 points); lower values push it up.\n"
+            "- **A predicted failure costs efficiency.** `Predicted_Failure` = 1 lowers the score "
+            "by about 3 points, while 0 gives a small lift of about +1.\n"
+            "- **Little influence:** `Fuzzy_PID_Output`, `Maintenance_Status` and `Pressure` sit "
+            "close to zero.\n\n"
+            "**Actionable takeaway:** cutting edge processing time and network latency is the "
+            "biggest lever for efficiency; vibration and temperature are useful early-warning signals."
+        ),
+        # Static insight written from the current Experiment 4 metrics table.
+        # Re-check and update this text if the metrics file is re-exported.
+        "metrics_insight": (
+            "**Key insights — Edge efficiency model comparison**\n\n"
+            "- **Best overall: `GradientBoosting_tuned`.** It has the lowest RMSE (2.587) and the "
+            "highest R\u00b2 (0.9897), so it makes the fewest large errors in predicting "
+            "`Edge_Efficiency_Score`.\n"
+            "- **Tuning helped Gradient Boosting, not Random Forest.** Tuning cut Gradient "
+            "Boosting's RMSE by about 2.3% and its MAE by about 8.8%. For Random Forest, RMSE "
+            "rose slightly (2.663 \u2192 2.673) and MAE fell slightly (0.776 \u2192 0.769), which "
+            "is effectively no change.\n"
+            "- **The two families make different kinds of error.** The Random Forest variants have "
+            "the lowest MAE (about 0.77 vs 0.90), so they are closer on typical rows, while tuned "
+            "Gradient Boosting has smaller worst-case misses. RMSE is roughly 3x MAE for every "
+            "model, which means a few large errors dominate the RMSE.\n"
+            "- **All four models are close.** R\u00b2 stays between 0.989 and 0.990 and RMSE is "
+            "within about 3% across models, so the choice matters less than the quality of the "
+            "input data.\n\n"
+            "**Takeaway:** use `GradientBoosting_tuned` when large misses are costly; the "
+            "Random Forest models are a reasonable alternative if typical-case accuracy matters more."
+        ),
         "numeric_features": [
             "Temperature", "Pressure", "Vibration",
             "Network_Latency", "Edge_Processing_Time", "Fuzzy_PID_Output",
@@ -48,6 +93,51 @@ TRACKS = {
         "metrics_path": METRICS_DIR / "infra_metrics.csv",
         "reference_path": SAMPLE_DIR / "telemetry_reference_sample.csv",
         "target": "Infrastructure_Efficiency_Score",
+        "input_insight": (
+            "The infrastructure model uses host/pod telemetry to estimate efficiency. In the "
+            "current model, `CPU (%)` and `Energy (watts)` have the strongest influence: higher "
+            "values generally lower the prediction. Higher `MEM (%)` and `MEM (B)` also tend to "
+            "lower it. `Telemetry_Type` has a modest influence, while `Scenario`, network "
+            "throughput (`rx`/`tx`), filesystem use (`fs (%)`), and `Pod_Status` have comparatively "
+            "little influence. These are learned associations, not causal guarantees."
+        ),
+        # Static insight written from the current model's SHAP summary plot.
+        # Re-check and update this text if the model is retrained.
+        "shap_insight": (
+            "**Key insights — Infrastructure efficiency model**\n\n"
+            "- **Energy and CPU dominate.** High `Energy (watts)` lowers the score by roughly "
+            "12\u201316 points and low energy raises it by about 8\u201315. `CPU (%)` behaves the "
+            "same way, and the heaviest CPU loads carry the largest penalty (down to about \u221227).\n"
+            "- **Memory is the next factor.** High `MEM (B)` and `MEM (%)` reduce the score "
+            "(up to about \u22128 and \u22123 points); low memory use gives a small lift.\n"
+            "- **Telemetry type matters modestly.** `Telemetry_Type` = Pod adds about +2 points and "
+            "Node subtracts about 2.\n"
+            "- **Little influence:** `Scenario`, `rx (B/sec)`, `fs (%)`, `tx (B/sec)` and "
+            "`Pod_Status` are close to zero.\n\n"
+            "**Actionable takeaway:** workloads with high energy draw, CPU and memory are the least "
+            "efficient, so they are the first candidates for rebalancing or offloading."
+        ),
+        # Static insight written from the current Experiment 4 metrics table.
+        # Re-check and update this text if the metrics file is re-exported.
+        "metrics_insight": (
+            "**Key insights — Infrastructure efficiency model comparison**\n\n"
+            "- **Best overall: `GradientBoosting_tuned`.** It has the lowest RMSE (2.587) and the "
+            "highest R\u00b2 (0.9897), so it makes the fewest large errors in predicting "
+            "`Infrastructure_Efficiency_Score`.\n"
+            "- **Tuning helped Gradient Boosting, not Random Forest.** Tuning cut Gradient "
+            "Boosting's RMSE by about 2.3% and its MAE by about 8.8%. For Random Forest, RMSE "
+            "rose slightly (2.663 \u2192 2.673) and MAE fell slightly (0.776 \u2192 0.769), which "
+            "is effectively no change.\n"
+            "- **The two families make different kinds of error.** The Random Forest variants have "
+            "the lowest MAE (about 0.77 vs 0.90), so they are closer on typical rows, while tuned "
+            "Gradient Boosting has smaller worst-case misses. RMSE is roughly 3x MAE for every "
+            "model, which means a few large errors dominate the RMSE.\n"
+            "- **All four models are close.** R\u00b2 stays between 0.989 and 0.990 and RMSE is "
+            "within about 3% across models, so the choice matters less than the quality of the "
+            "input data.\n\n"
+            "**Takeaway:** use `GradientBoosting_tuned` when large misses are costly; the "
+            "Random Forest models are a reasonable alternative if typical-case accuracy matters more."
+        ),
         "numeric_features": [
             "CPU (%)", "Energy (watts)", "MEM (%)", "fs (%)",
             "rx (B/sec)", "tx (B/sec)", "MEM (B)",
@@ -117,20 +207,120 @@ def compute_shap(track_key: str, _model, _reference_df, feature_cols, categorica
     return explainer(display_sample), display_sample
 
 
+def load_reference(t: dict):
+    """Load a track's reference sample with numeric NaNs filled as 0.
+
+    Telemetry has structural NaNs (node rows lack pod fields and vice versa).
+    Experiment 4 trained with these filled as 0, so do the same here; otherwise
+    dropna() in the SHAP tab would discard every row on the infra track.
+    """
+    df = load_csv(t["reference_path"])
+    if df is None:
+        return None
+    df = df.copy()
+    num = [c for c in t["numeric_features"] if c in df.columns]
+    df[num] = df[num].fillna(0)
+    return df
+
+
+def track_inputs(t: dict, ref, prefix: str) -> dict:
+    """Render number/select widgets for one track and return the input row."""
+    values = {}
+    for feat in t["numeric_features"]:
+        default = float(ref[feat].median()) if ref is not None and feat in ref.columns else 0.0
+        values[feat] = st.number_input(feat, value=default, key=f"{prefix}_{t['key']}_{feat}")
+    for feat, options in t["categorical_features"].items():
+        values[feat] = st.selectbox(feat, options, key=f"{prefix}_{t['key']}_{feat}")
+    return values
+
+
+def render_placement_page():
+    """Predict both efficiency scores, compare them, and recommend a platform."""
+    edge_t = TRACKS["Edge (IIoT)"]
+    infra_t = TRACKS["Infrastructure (Cloud/Pod)"]
+
+    st.title("Preferred Computing Platform")
+    st.caption(
+        "This project explores adaptive workload placement by comparing predicted efficiency "
+        "for edge IIoT and cloud/pod infrastructure. Enter the conditions for each platform; "
+        "the dashboard predicts both scores and recommends the higher one."
+    )
+
+    edge_model = load_model(edge_t["model_path"])
+    infra_model = load_model(infra_t["model_path"])
+    missing = [
+        str(t["model_path"].relative_to(BASE_DIR))
+        for t, m in ((edge_t, edge_model), (infra_t, infra_model)) if m is None
+    ]
+    if missing:
+        st.warning("Model file(s) not found: " + ", ".join(f"`{p}`" for p in missing))
+        return
+
+    tie_pct = st.slider(
+        "Tie margin (%)", 0.0, 20.0, 2.0, 0.5,
+        help="If the two scores differ by no more than this percentage of the larger "
+             "score, the platforms are reported as comparable instead of picking a winner.",
+    )
+
+    with st.form("placement_form"):
+        left, right = st.columns(2)
+        with left:
+            st.markdown("#### Edge (IIoT) conditions")
+            edge_inputs = track_inputs(edge_t, load_reference(edge_t), "place")
+        with right:
+            st.markdown("#### Infrastructure (Cloud/Pod) conditions")
+            infra_inputs = track_inputs(infra_t, load_reference(infra_t), "place")
+        submitted = st.form_submit_button("Compare platforms")
+
+    if not submitted:
+        st.info("Fill in both sets of conditions and press **Compare platforms**.")
+        return
+
+    try:
+        edge_score = float(edge_model.predict(pd.DataFrame([edge_inputs]))[0])
+        infra_score = float(infra_model.predict(pd.DataFrame([infra_inputs]))[0])
+    except Exception as exc:
+        st.error(f"Prediction failed: {exc}")
+        return
+
+    gap = edge_score - infra_score
+    gap_pct = abs(gap) / max(abs(edge_score), abs(infra_score), 1e-9) * 100
+
+    if gap_pct <= tie_pct:
+        st.info(f"\u2696\uFE0F **Comparable** — scores are within {gap_pct:.1f}% of each other.")
+    elif gap > 0:
+        st.success(f"\u2705 **Preferred platform: Edge** — scores {gap_pct:.1f}% higher than Cloud/Pod.")
+    else:
+        st.success(f"\u2705 **Preferred platform: Cloud/Pod infrastructure** — scores {gap_pct:.1f}% higher than Edge.")
+
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Edge efficiency", f"{edge_score:.2f}")
+    c2.metric("Infrastructure efficiency", f"{infra_score:.2f}")
+    c3.metric("Edge minus Infra", f"{gap:+.2f}")
+
+    st.bar_chart(
+        pd.DataFrame({"Predicted efficiency": [edge_score, infra_score]},
+                     index=["Edge", "Infrastructure"])
+    )
+    st.caption(
+        "Assumes a higher score is better and that the two scores are on a comparable "
+        "scale. If the models were trained on differently scaled targets, treat the "
+        "comparison as indicative only."
+    )
+
+
 st.sidebar.title("Cloud-Edge Tradeoff")
-st.sidebar.caption("Adaptive Workload Placement — Experiment 8 Dashboard")
+st.sidebar.caption("Adaptive Workload Placement — Dashboard")
+page = st.sidebar.radio("View", ["Track Analysis", "Placement Recommendation"])
+if page == "Placement Recommendation":
+    render_placement_page()
+    st.stop()
+
 track_label = st.sidebar.radio("Track", list(TRACKS.keys()))
 track = TRACKS[track_label]
 
 model = load_model(track["model_path"])
-reference_df = load_csv(track["reference_path"])
-if reference_df is not None:
-    # Telemetry has structural NaNs (node rows lack pod fields and vice versa).
-    # Experiment 4 trained with these filled as 0, so do the same here; otherwise
-    # dropna() in the SHAP tab would discard every row on the infra track.
-    reference_df = reference_df.copy()
-    _num = [c for c in track["numeric_features"] if c in reference_df.columns]
-    reference_df[_num] = reference_df[_num].fillna(0)
+reference_df = load_reference(track)
 metrics_df = load_csv(track["metrics_path"])
 
 st.title("Adaptive Workload Placement — Efficiency Dashboard")
@@ -147,10 +337,17 @@ tab_predict, tab_shap, tab_metrics, tab_drift = st.tabs(
 # ---------------------------------------------------------------------------
 with tab_predict:
     st.subheader(f"Predict {track['target']}")
+    st.markdown(
+        "Provide the workload measurements and categories below. Numeric inputs represent "
+        "sensor or resource usage; category inputs describe machine status, failure state, "
+        "or telemetry context. The trained model combines them to estimate the efficiency score."
+    )
+    with st.expander("How these inputs influence the prediction"):
+        st.markdown(track["input_insight"])
     if model is None:
         st.warning(
             f"Model file not found at `{track['model_path'].relative_to(BASE_DIR)}`. "
-            "Place the corresponding .pkl from Experiment 4 there to enable predictions."
+            "Place the corresponding .pkl to enable predictions."
         )
     else:
         with st.form(f"predict_form_{track['key']}"):
@@ -184,6 +381,11 @@ with tab_predict:
 # ---------------------------------------------------------------------------
 with tab_shap:
     st.subheader("Global Feature Importance (SHAP)")
+    st.markdown(
+        "SHAP estimates how each input moves model predictions relative to a baseline. "
+        "A positive contribution raises the predicted score; a negative contribution lowers it. "
+        "The size and spread show model influence, not proof of cause and effect."
+    )
     if model is None:
         st.warning("Model not loaded — see the Predict tab for setup instructions.")
     elif reference_df is None:
@@ -192,6 +394,7 @@ with tab_shap:
             "Needed as SHAP background/display data — see README.md for how to export it."
         )
     else:
+        st.info(track["shap_insight"])
         with st.spinner("Computing SHAP values..."):
             shap_values, display_sample = compute_shap(
                 track["key"], model, reference_df,
@@ -208,16 +411,25 @@ with tab_shap:
             "Categorical features are shown as integer codes (alphabetical order of their "
             "categories) for plotting purposes only — the model itself sees the real labels."
         )
+        st.caption(
+            "SHAP describes what the model relies on, not proven cause and effect, and "
+            "these notes reflect the current trained models."
+        )
 
 # ---------------------------------------------------------------------------
 # Metrics tab
 # ---------------------------------------------------------------------------
 with tab_metrics:
-    st.subheader("Baseline vs. Tuned Model Comparison (from Experiment 4)")
+    st.subheader("Baseline vs. Tuned Model Comparison")
+    st.markdown(
+        "These metrics summarize prediction error on the model evaluation data. Lower **RMSE** "
+        "and **MAE** indicate more accurate predictions; RMSE penalizes large misses more heavily. "
+        "Higher **R²** indicates that the model explains more variation in the target."
+    )
     if metrics_df is None:
         st.warning(
             f"Metrics file not found at `{track['metrics_path'].relative_to(BASE_DIR)}`. "
-            "Export edge_all_results / infra_all_results from Experiment 4 as CSV — see README.md."
+            "Export edge_all_results / infra_all_results as CSV — see README.md."
         )
     else:
         display_df = metrics_df.copy()
@@ -230,6 +442,27 @@ with tab_metrics:
         else:
             st.dataframe(display_df, use_container_width=True)
 
+        # Auto-generated summary of the best model, computed from the metrics file
+        # so it stays correct if Experiment 4 results are re-exported.
+        if has_all:
+            scored = display_df.copy()
+            for _c in ("RMSE", "MAE", "R2"):
+                scored[_c] = pd.to_numeric(scored[_c], errors="coerce")
+            scored = scored.dropna(subset=["RMSE", "MAE", "R2"])
+            if not scored.empty:
+                best_idx = scored["RMSE"].idxmin()
+                best = scored.loc[best_idx]
+                label_cols = [c for c in scored.columns if c not in ("RMSE", "MAE", "R2")][:2]
+                label = " / ".join(str(best[c]) for c in label_cols) or f"row {best_idx}"
+
+                st.success(f"\U0001F3C6 **Best model (lowest RMSE): {label}**")
+                m1, m2, m3 = st.columns(3)
+                m1.metric("RMSE", f"{best['RMSE']:.3f}")
+                m2.metric("MAE", f"{best['MAE']:.3f}")
+                m3.metric("R\u00b2", f"{best['R2']:.3f}")
+
+                st.info(track["metrics_insight"])
+
 # ---------------------------------------------------------------------------
 # Drift tab
 # ---------------------------------------------------------------------------
@@ -238,6 +471,11 @@ with tab_drift:
     st.markdown(
         "Upload a new batch of data in the same column format to check whether its "
         "feature distributions have drifted from the training-time reference sample."
+    )
+    st.caption(
+        "Numeric features are compared with a Kolmogorov-Smirnov test and categorical features "
+        "with a chi-square test. A p-value below 0.05 flags a distribution difference; this is "
+        "a statistical signal, not by itself evidence that model accuracy has fallen."
     )
     uploaded = st.file_uploader("Upload CSV", type="csv", key=f"drift_{track['key']}")
 
